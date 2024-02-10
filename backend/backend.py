@@ -7,18 +7,18 @@ from pydantic import BaseModel
 from typing import List,Dict
 
 class patient_info(BaseModel):
-    age: str
+    age: float
     sex: str
     cp: str
-    trestbps: str
-    chol: str
+    trestbps: float
+    chol: float
     fbs: str
     restecg: str
-    thalach: str
+    thalach: float
     exang: str
-    oldpeak: str
+    oldpeak: float
     slope: str
-    ca: str
+    ca: float
     thal: str
     
 app = fastapi.FastAPI()
@@ -31,8 +31,8 @@ def preproccess_biometrics(bio_json):
     bio_json = dict(bio_json)
     #bio_json = json.dump({bio_json})
     
-    bio_json["sex"] = int(bio_json["sex"])
-    bio_json["cp"] = int(bio_json["cp"])
+    bio_json["sex"] = int(bio_json["sex"][0])
+    bio_json["cp"] = int(bio_json["cp"][0])
     bio_json["fbs"] = str_mappings[bio_json["fbs"]]
     bio_json["restecg"] = int(bio_json["restecg"][0])
     bio_json["exang"] = str_mappings[bio_json["exang"]]
@@ -52,7 +52,6 @@ def prediction(bio_json: patient_info):
 
     bio_vector = preproccess_biometrics(bio_json)
     bio_vector =np.array(bio_vector)
-    print("&&&&& ",bio_vector)
     model = joblib.load(assets_path + 'model10.pb')
 
     with open(assets_path + 'scaler.pkl', 'rb') as scaler_file:
