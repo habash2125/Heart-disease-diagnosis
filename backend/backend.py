@@ -72,12 +72,16 @@ def add_data(bio_json: patient_info_with_pred):
     
     bio_vector = preproccess_biometrics(bio_json, remove_fbs=False)
 
-    database_path = '/home/habash/Desktop/grad/database/clevland_replica.db'
-    cur = sqlite3.connect(database_path).cursor()
-        
+    database_path = '/home/habash/Desktop/grad/clevland_replica.db'
+    con = sqlite3.connect(database_path)
+    cur = con.cursor()
     # Generate placeholders for the values in the SQL query
     placeholders = ','.join(['?' for _ in bio_vector])
     # Execute the SQL query with parameterized values
     cur.execute(f"INSERT INTO extended_cleveland VALUES ({placeholders})", bio_vector)
+
+    con.commit()
     
-    return 34
+    cur.close()
+    con.close()
+    return "Done"
