@@ -4,7 +4,7 @@ import joblib
 import numpy as np
 from pydantic import BaseModel
 from helpers_func import *
-
+import sqlite3
 
 class patient_info(BaseModel):
     age: float
@@ -21,6 +21,24 @@ class patient_info(BaseModel):
     ca: float
     thal: str
     
+    
+class patient_info_with_pred(BaseModel):
+    age: float
+    sex: str
+    cp: str
+    trestbps: float
+    chol: float
+    fbs: str
+    restecg: str
+    thalach: float
+    exang: str
+    oldpeak: float
+    slope: str
+    ca: float
+    thal: str
+    prediction : float
+
+
 app = fastapi.FastAPI()
 
 
@@ -49,7 +67,17 @@ def prediction(bio_json: patient_info):
 
 
 
-
 @app.post("/add_patient_data")
-def add_data(bio_json: patient_info):
+def add_data(bio_json: patient_info_with_pred):
     
+    bio_vector = preproccess_biometrics(bio_json, remove_fbs=False)
+
+    database_path = '/home/habash/Desktop/grad/database/clevland_replica.db'
+    cur = sqlite3.connect(database_path).cursor()
+        
+    # Generate placeholders for the values in the SQL query
+    placeholders = ','.join(['?' for _ in bio_vector])
+    # Execute the SQL query with parameterized values
+    cur.execute(f"INSERT INTO extended_cleveland VALUES ({placeholders})", bio_vector)
+    
+    return 34

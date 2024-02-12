@@ -1,9 +1,8 @@
 
-def preproccess_biometrics(bio_json):
+def preproccess_biometrics(bio_json,remove_fbs =True):
 
     str_mappings = {'True': 1, 'False': 0, 'Yes': 1, 'No': 0 , "0" : 0}
 
-    print(dict(bio_json))
     bio_json = dict(bio_json)
     #bio_json = json.dump({bio_json})
     
@@ -15,7 +14,9 @@ def preproccess_biometrics(bio_json):
     bio_json["slope"] = int(bio_json["slope"][0])
     bio_json["thal"] = int(bio_json["thal"][0])
 
-    bio_json.pop("fbs")
+    if remove_fbs:
+        bio_json.pop("fbs")
+
     bio_vector = [int(bio_json[x]) for x in bio_json.keys()]
-    print("&&&&& ",bio_vector)
+
     return bio_vector
