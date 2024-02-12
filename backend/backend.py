@@ -5,6 +5,7 @@ import numpy as np
 from pydantic import BaseModel
 from helpers_func import *
 import sqlite3
+import os 
 
 class patient_info(BaseModel):
     age: float
@@ -45,7 +46,9 @@ app = fastapi.FastAPI()
 @app.post("/prediction")
 def prediction(bio_json: patient_info):
 
-    assets_path = "/home/habash/Desktop/grad/models_and_assests/"
+    current_path = os.getcwd()
+    assets_path = current_path + "/models_and_assests/"
+
 
     bio_vector = preproccess_biometrics(bio_json)
     bio_vector =np.array(bio_vector)
@@ -70,9 +73,12 @@ def prediction(bio_json: patient_info):
 @app.post("/add_patient_data")
 def add_data(bio_json: patient_info_with_pred):
     
+    current_path = os.getcwd()
+    parent_path = os.path.dirname(current_path)
+    database_path = parent_path + '/clevland_replica.db'
+
     bio_vector = preproccess_biometrics(bio_json, remove_fbs=False)
 
-    database_path = '/home/habash/Desktop/grad/clevland_replica.db'
     con = sqlite3.connect(database_path)
     cur = con.cursor()
     # Generate placeholders for the values in the SQL query
