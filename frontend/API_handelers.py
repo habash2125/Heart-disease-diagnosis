@@ -14,3 +14,5 @@ def handle_submit(biometrics):
                 st.write("Do not have a heart disease")
     else:
         st.error(f"Error: {res.status_code}")
+    
+    return output

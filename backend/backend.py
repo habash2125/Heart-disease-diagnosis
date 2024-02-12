@@ -1,10 +1,10 @@
 import fastapi
 import pickle
 import joblib
-import json
 import numpy as np
 from pydantic import BaseModel
-from typing import List,Dict
+from helpers_func import *
+import sqlite3
 
 class patient_info(BaseModel):
     age: float
@@ -21,33 +21,30 @@ class patient_info(BaseModel):
     ca: float
     thal: str
     
-app = fastapi.FastAPI()
-
-def preproccess_biometrics(bio_json):
-
-    str_mappings = {'True': 1, 'False': 0, 'Yes': 1, 'No': 0 , "0" : 0}
-
-    print(dict(bio_json))
-    bio_json = dict(bio_json)
-    #bio_json = json.dump({bio_json})
     
-    bio_json["sex"] = int(bio_json["sex"][0])
-    bio_json["cp"] = int(bio_json["cp"][0])
-    bio_json["fbs"] = str_mappings[bio_json["fbs"]]
-    bio_json["restecg"] = int(bio_json["restecg"][0])
-    bio_json["exang"] = str_mappings[bio_json["exang"]]
-    bio_json["slope"] = int(bio_json["slope"][0])
-    bio_json["thal"] = int(bio_json["thal"][0])
+class patient_info_with_pred(BaseModel):
+    age: float
+    sex: str
+    cp: str
+    trestbps: float
+    chol: float
+    fbs: str
+    restecg: str
+    thalach: float
+    exang: str
+    oldpeak: float
+    slope: str
+    ca: float
+    thal: str
+    prediction : float
 
-    bio_json.pop("fbs")
-    bio_vector = [int(bio_json[x]) for x in bio_json.keys()]
-    print("&&&&& ",bio_vector)
-    return bio_vector
 
+app = fastapi.FastAPI()
 
 
 @app.post("/prediction")
 def prediction(bio_json: patient_info):
+
     assets_path = "/home/habash/Desktop/grad/models_and_assests/"
 
     bio_vector = preproccess_biometrics(bio_json)
@@ -66,3 +63,25 @@ def prediction(bio_json: patient_info):
     output = np.round(model.predict(pcaed_vec))
 
     return {"output": output[0][0].tolist()}
+
+
+
+
+@app.post("/add_patient_data")
+def add_data(bio_json: patient_info_with_pred):
+    
+    bio_vector = preproccess_biometrics(bio_json, remove_fbs=False)
+
+    database_path = '/home/habash/Desktop/grad/clevland_replica.db'
+    con = sqlite3.connect(database_path)
+    cur = con.cursor()
+    # Generate placeholders for the values in the SQL query
+    placeholders = ','.join(['?' for _ in bio_vector])
+    # Execute the SQL query with parameterized values
+    cur.execute(f"INSERT INTO extended_cleveland VALUES ({placeholders})", bio_vector)
+
+    con.commit()
+    
+    cur.close()
+    con.close()
+    return "Done"
