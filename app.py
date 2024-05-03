@@ -21,7 +21,7 @@ def main():
     value = os.getenv("ENV")
     API_path =os.getenv('api_path')
     #st.write(os.getcwd())
-    st.write(API_path)
+    st.write(value)
     print(value)
 
     biometrics = create_input_form()
