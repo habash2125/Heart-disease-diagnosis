@@ -12,6 +12,7 @@ def handle_submit(biometrics):
     value = os.getenv("ENV")
     API_path =os.getenv('api_path')
 
+    output = None
     res = requests.post(API_path + 'prediction', json=biometrics)
     if res.status_code == 200:
         response_data = res.json()
