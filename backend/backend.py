@@ -39,9 +39,7 @@ class patient_info_with_pred(BaseModel):
     thal: str
     prediction : float
 
-
 app = fastapi.FastAPI()
-
 
 @app.post("/prediction")
 def prediction(bio_json: patient_info):
@@ -92,4 +90,3 @@ def add_data(bio_json: patient_info_with_pred):
     con.close()
     return "Done"
 
-## dsfa 
