@@ -19,7 +19,9 @@ cur = con.cursor()
 
 print('Database Created!!')
 ## filling the tables with the data from the CSV file 
-with open('database/processed_cleveland.csv', 'r') as file:
+
+current_path = os.getcwd()
+with open(current_path + '/database/processed_cleveland.csv', 'r') as file:
     reader = csv.reader(file)
     headers = next(reader)  # Assuming the first row of the CSV file contains column headers
     data = list(reader)  # Read the remaining rows into a list

@@ -20,9 +20,9 @@ def main():
     # Access environment variables
     value = os.getenv("ENV")
     API_path =os.getenv('api_path')
-    #st.write(os.getcwd())
-    st.write(value)
-    print(value)
+    
+    #st.write(value)
+    #print(value)
 
     biometrics = create_input_form()
 
@@ -34,7 +34,6 @@ def main():
         biometrics['prediction'] = pred
         if save_state : 
             res = requests.post(API_path + 'add_patient_data', json=biometrics)
-            print(res.text)
             if res.status_code == 200:
                 print("row added !! ")
 
