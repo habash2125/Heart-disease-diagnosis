@@ -3,7 +3,7 @@ import pickle
 import joblib
 import numpy as np
 from pydantic import BaseModel
-from helpers_func import *
+from .helpers_func import *
 import sqlite3
 import os 
 
@@ -45,7 +45,7 @@ app = fastapi.FastAPI()
 def prediction(bio_json: patient_info):
 
     current_path = os.getcwd()
-    assets_path = current_path + "/models_and_assests/"
+    assets_path = current_path + "/backend/models_and_assests/"
 
 
     bio_vector = preproccess_biometrics(bio_json)

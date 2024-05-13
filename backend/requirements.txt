@@ -1,0 +1,7 @@
+fastapi
+tensorflow
+joblib
+pickle
+numpy 
+pydantic
+sqlite3
