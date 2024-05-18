@@ -17,7 +17,7 @@ def main():
     # Load .env file
     load_dotenv()
 
-    API_path = "http://127.0.0.1:8000/"
+    API_path = "http://backend:8000/"
 
     biometrics = create_input_form()
 
@@ -28,15 +28,12 @@ def main():
         pred = handle_submit(biometrics)
         biometrics['prediction'] = pred
         if save_state :
-            st.write(API_path)
-            print("######" , API_path , "3333333333333")
 
             res = requests.post(API_path + 'add_patient_data', json=biometrics)
             if res.status_code == 200:
                 print("row added !! ")
 
 if __name__ == '__main__':
-
     main()
 
     

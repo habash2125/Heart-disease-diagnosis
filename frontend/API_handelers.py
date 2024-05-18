@@ -12,7 +12,7 @@ def handle_submit(biometrics):
     ## TODO: add config file
     # Access environment variables
     value = os.getenv("ENV")
-    API_path = "http://127.0.0.1:8000/"
+    API_path = "http://backend:8000/"
 
     output = None
     res = requests.post(API_path + 'prediction', json=biometrics)

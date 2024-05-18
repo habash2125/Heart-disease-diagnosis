@@ -3,10 +3,13 @@ import pickle
 import joblib
 import numpy as np
 from pydantic import BaseModel
-from .helpers_func import *
 import sqlite3
-import os 
+import os
+import sklearn
 
+from helpers_func import *
+
+## TODO remove the classes from here
 class patient_info(BaseModel):
     age: float
     sex: str
@@ -45,7 +48,7 @@ app = fastapi.FastAPI()
 def prediction(bio_json: patient_info):
 
     current_path = os.getcwd()
-    assets_path = current_path + "/backend/models_and_assests/"
+    assets_path = current_path + "/models_and_assests/"
 
 
     bio_vector = preproccess_biometrics(bio_json)
@@ -73,20 +76,28 @@ def add_data(bio_json: patient_info_with_pred):
     
     current_path = os.getcwd()
     parent_path = os.path.dirname(current_path)
+
+    print('current_path : ', current_path)
+
     database_path = parent_path + '/clevland_replica.db'
 
     bio_vector = preproccess_biometrics(bio_json, remove_fbs=False)
 
-    con = sqlite3.connect(database_path)
-    cur = con.cursor()
-    # Generate placeholders for the values in the SQL query
-    placeholders = ','.join(['?' for _ in bio_vector])
-    # Execute the SQL query with parameterized values
-    cur.execute(f"INSERT INTO extended_cleveland VALUES ({placeholders})", bio_vector)
+    try:
+        con = sqlite3.connect(database_path)
+        cur = con.cursor()
+        # Generate placeholders for the values in the SQL query
+        placeholders = ','.join(['?' for _ in bio_vector])
+        # Execute the SQL query with parameterized values
+        cur.execute(f"INSERT INTO extended_cleveland VALUES ({placeholders})", bio_vector)
 
-    con.commit()
-    
-    cur.close()
-    con.close()
+        con.commit()
+
+        cur.close()
+        con.close()
+
+    except Exception as e:
+        print("Error in the database connection: ", e)
+
     return "Done"
 

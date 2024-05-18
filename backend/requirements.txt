@@ -1,7 +1,7 @@
 fastapi
+keras ~= 2.15.0
 tensorflow
 joblib
-pickle
 numpy 
 pydantic
-sqlite3
+scikit-learn

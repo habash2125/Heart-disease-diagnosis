@@ -1,6 +1,10 @@
-scikit-learn 
-keras == 2.15.0
-tensorflow 
-streamlit
-python-dotenv
-fastapi
+scikit-learn~=1.4.2
+keras ~= 2.15.0
+tensorflow
+streamlit~=1.34.0
+python-dotenv~=1.0.1
+fastapi~=0.111.0
+joblib~=1.4.2
+numpy~=1.26.4
+pydantic~=2.7.1
+requests~=2.31.0
