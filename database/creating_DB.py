@@ -3,7 +3,7 @@ import csv
 import os
 
 # Path to your SQLite database file
-db_file = 'clevland_replica.db'
+db_file = '../clevland_replica.db'
 
 # Check if the file exists before attempting to delete it
 if os.path.exists(db_file):
@@ -14,14 +14,14 @@ else:
 
 
 # creating DataBase
-con = sqlite3.connect("clevland_replica.db")
+con = sqlite3.connect("../clevland_replica.db")
 cur = con.cursor()
 
 print('Database Created!!')
 ## filling the tables with the data from the CSV file 
 
 current_path = os.getcwd()
-with open(current_path + '/database/processed_cleveland.csv', 'r') as file:
+with open(current_path + '/processed_cleveland.csv', 'r') as file:
     reader = csv.reader(file)
     headers = next(reader)  # Assuming the first row of the CSV file contains column headers
     data = list(reader)  # Read the remaining rows into a list
@@ -37,6 +37,8 @@ with open(current_path + '/database/processed_cleveland.csv', 'r') as file:
     '''
     insert_sql = f"INSERT INTO extended_cleveland ({', '.join(headers)}) VALUES ({', '.join(['?'] * len(headers))})"
     cur.executemany(insert_sql, data)
+    
+    
     '''
 
 

@@ -2,57 +2,27 @@ import fastapi
 import pickle
 import joblib
 import numpy as np
-from pydantic import BaseModel
 import sqlite3
 import os
 import sklearn
 
 from helpers_func import *
+from JsonClasses import *
 
-## TODO remove the classes from here
-class patient_info(BaseModel):
-    age: float
-    sex: str
-    cp: str
-    trestbps: float
-    chol: float
-    fbs: str
-    restecg: str
-    thalach: float
-    exang: str
-    oldpeak: float
-    slope: str
-    ca: float
-    thal: str
-    
-    
-class patient_info_with_pred(BaseModel):
-    age: float
-    sex: str
-    cp: str
-    trestbps: float
-    chol: float
-    fbs: str
-    restecg: str
-    thalach: float
-    exang: str
-    oldpeak: float
-    slope: str
-    ca: float
-    thal: str
-    prediction : float
+# TODO remove the classes from here
+
+
 
 app = fastapi.FastAPI()
 
-@app.post("/prediction")
-def prediction(bio_json: patient_info):
 
+@app.post("/prediction")
+def prediction(bio_json: PatientInfo):
     current_path = os.getcwd()
     assets_path = current_path + "/models_and_assests/"
 
-
     bio_vector = preproccess_biometrics(bio_json)
-    bio_vector =np.array(bio_vector)
+    bio_vector = np.array(bio_vector)
     model = joblib.load(assets_path + 'model10.pb')
 
     with open(assets_path + 'scaler.pkl', 'rb') as scaler_file:
@@ -69,15 +39,10 @@ def prediction(bio_json: patient_info):
     return {"output": output[0][0].tolist()}
 
 
-
-
 @app.post("/add_patient_data")
-def add_data(bio_json: patient_info_with_pred):
-    
+def add_data(bio_json: PatientInfoWithPred):
     current_path = os.getcwd()
     parent_path = os.path.dirname(current_path)
-
-    print('current_path : ', current_path)
 
     database_path = parent_path + '/clevland_replica.db'
 
@@ -100,4 +65,3 @@ def add_data(bio_json: patient_info_with_pred):
         print("Error in the database connection: ", e)
 
     return "Done"
-

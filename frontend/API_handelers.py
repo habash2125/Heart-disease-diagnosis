@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 import os 
 from dotenv import load_dotenv
-
+from config import Config
 def handle_submit(biometrics):
 
      # Load .env file
@@ -11,9 +11,9 @@ def handle_submit(biometrics):
 
     ## TODO: add config file
     # Access environment variables
-    value = os.getenv("ENV")
-    API_path = "http://backend:8000/"
-
+    env = os.getenv("ENV")
+    config = Config[env]
+    API_path = config["api_path"]
     output = None
     res = requests.post(API_path + 'prediction', json=biometrics)
     if res.status_code == 200:

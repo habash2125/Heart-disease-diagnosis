@@ -9,6 +9,8 @@ services:
       - deploy_network
     container_name: fastapi_comp
 
+    environment:
+      - ENV='docker'
   streamlit:
     build: frontend/
     depends_on:
