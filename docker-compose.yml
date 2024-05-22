@@ -11,6 +11,7 @@ services:
 
     environment:
       - ENV='docker'
+
   streamlit:
     build: frontend/
     depends_on:
