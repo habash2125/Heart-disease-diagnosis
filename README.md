@@ -30,7 +30,7 @@ Docker is employed to create a containerized application, simplifying deployment
   - if you are running the code using docker
    ```bash
     docker-compose up 
-    ```
+   ```
   that will run the whole app and you can access it directly
   - if you are not using docker
     - you will have to run the frontend from using
