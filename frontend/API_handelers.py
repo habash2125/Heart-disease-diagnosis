@@ -8,8 +8,6 @@ def handle_submit(biometrics):
      # Load .env file
     load_dotenv()
 
-
-    ## TODO: add config file
     # Access environment variables
     env = os.getenv("ENV")
     config = Config[env]

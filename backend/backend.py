@@ -9,12 +9,7 @@ import sklearn
 from helpers_func import *
 from JsonClasses import *
 
-# TODO remove the classes from here
-
-
-
 app = fastapi.FastAPI()
-
 
 @app.post("/prediction")
 def prediction(bio_json: PatientInfo):
