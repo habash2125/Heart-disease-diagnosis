@@ -1,6 +1,4 @@
-﻿I'd be glad to create a comprehensive README for your GitHub repository that builds upon the information you've provided:
-Project: Heart Disease Diagnosis System
-Description
+
 This project implements a heart disease diagnosis system using a machine-learning model built with Python. It offers a user-friendly web interface for interactive prediction, leveraging the strengths of Streamlit for the frontend and FastAPI for the backend. Docker ensures seamless deployment and containerization.
 Key Technologies
 * Frontend: Streamlit
